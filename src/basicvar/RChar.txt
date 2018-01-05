@@ -1,0 +1,2 @@
+对R语言中的字符/字符串变量进行的封装，继承自CommonVar类。
+其classType为character，打印时需要被“”引起。

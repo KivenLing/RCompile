@@ -1,0 +1,2 @@
+对R语言中的布尔变量进行的封装，继承自CommonVar类。
+其classType为logical，打印是TRUE/FALSE需要全大写。

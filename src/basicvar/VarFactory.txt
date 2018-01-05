@@ -1,0 +1,13 @@
+其为基础变量的生产工厂，采用简单工厂模式。
+其中保存一个VarManager对象来管理变量在生成时候的添加入变量表。
+函数解释如下：
+createVar(String name, String varType, String value) - 
+	对于含有名字的变量，根据其变量类别，将其传入的Value放入对应封
+    装变量类型，写入变量表，并且返回一个CommonVar对象。
+CommonVar createVar(String varType, String value) - 
+	对于缺少名字的变量，直接根据其变量类型生成对应封装变量并且以一
+    个CommonVar对象返回。
+addToManager(String name, CommonVar var) - 
+	将变量写入参数表。
+createChar/Logical/Complex/Numeric/Integer(String value) - 
+	处理传入的Value并生成对应变量。

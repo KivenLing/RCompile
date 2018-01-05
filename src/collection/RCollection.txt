@@ -1,0 +1,9 @@
+对于R语言的集合变量的抽象，由其派生出如Vector，List，Matrix等数据。
+其中也封装了R语言各个集合的类型常量。
+函数：
+注意：使用泛型<Var extends CommonVar>,函数中Var视为CommonVar子类
+addElement(Var var) - 添加传入对象到集合。
+rmElement(Var var/int index) - 接受CommonVar子类对象 
+	或者 int型index下标值来删除集合中已有变量。
+getElement(int index) - 取出集合中相应对象。
+contain(Var var) - 查询是否存在对象var在集合中。

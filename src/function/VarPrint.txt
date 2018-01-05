@@ -1,0 +1,6 @@
+为变量打印做准备，接受String值并按照要求打印。
+函数：
+printVar(String varName) - 以R的print方式打印指定的单个变量（可为任意CommonVar类型
+	或者RCollection类型）。
+catVar(String varList) - 以R的cat方式在同一行打印多个变量（仅接受任意CommonVar类型
+	与Vector型，不接受List形，得到List将打印不支持信息而非抛出异常）。

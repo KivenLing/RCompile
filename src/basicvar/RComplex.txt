@@ -1,0 +1,6 @@
+对R语言中的复数变量进行的封装，继承自CommonVar类。
+其classType为complex。
+函数中：
+getReal() - 取出实数部分以便计算。
+getVirtual() - 取出虚数部分以便计算。
+打印时将输出x+yi的格式，中间无空格。

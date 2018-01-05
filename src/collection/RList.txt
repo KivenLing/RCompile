@@ -1,0 +1,5 @@
+模拟R语言中List集合，继承自RCollection类。
+其classType为list。
+函数：
+继承父类多数函数进行使用
+重写toString()函数 - 将其中所有变量的value以空格隔开并打印。

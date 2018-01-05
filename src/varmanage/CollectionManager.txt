@@ -1,0 +1,11 @@
+对集合变量进行管理，为单例模式，全局只维护一个对象。
+将对象的name与value放入Map中进行管理。
+函数：
+（与CommonVarManager基本相同，除返回对象为RCollection类子类）。
+isContains(String name) - 判定该name对应变量是否已经存在。
+addElement(String name, Var var) - 向Map中添加需管理变量。
+getElement(String name) - 依靠name取出对应变量进行操作。
+rmElement(String name) - 依靠name删除变量，如果没有则返回false，
+	删除成功则返回true
+printElement() - 不写为toString()原因是其只打印所有key值，
+	不涉及Map中的Value部分，仅仅返回现有全部变量。

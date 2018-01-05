@@ -8,6 +8,9 @@ public abstract class CommonVar {
 	public static final String LOGICAL = "logical";
 	public static final String INTEGER = "integer";
 	public static final String CHARACTER = "character";
+	public static final String COMMONVAR = "commonvar";
+	public static final String HIDEVAR = "hidevar";
+	public static final String VAR = "vars";
 	String classType;
 	
 	public String getClassType() {

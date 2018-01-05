@@ -1,0 +1,3 @@
+对R语言基础数据类型进行抽象，从此类继承的R基础变量类有：
+	RInteger；RBoeolean；RChar；RNumeric；RComplex；
+其中也封装了R语言各个变量的类型常量。

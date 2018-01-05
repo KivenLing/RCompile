@@ -1,0 +1,16 @@
+对普通变量管理与集合变量管理进行统一管理。
+为单例模式，全局只维护一个对象。
+将对象的name与value放入对应管理类的Map中进行管理。
+函数：
+varContains(String name) - 判定该name对应变量是否已经存在。
+（下面两个添加函数皆会查询是否该名字已存在，存在则对其实施覆盖）
+addCommonVar(String name, Var var) - 添加需管理的普通变量。
+addCollVar(String name, RCollection<CommonVar> var) - 添加
+	需管理的集合变量。
+getCommonVar(String name) - 依靠name取出对应普通变量进行操作。
+getCollection(String name) - 依靠name取出对应集合变量进行操作。
+rmVar(String name) - 依靠name删除变量，如果没有则返回false，
+	删除成功则返回true
+printVar() - 不写为toString()原因是其只打印所有key值，
+	不涉及Map中的Value部分，仅仅返回现有全部变量
+	（包括普通与集合两种变量）。

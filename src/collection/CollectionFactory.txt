@@ -1,0 +1,7 @@
+为集合变量的生产工厂，采用简单工厂模式。
+其中保存一个VarManager对象来管理变量在生成时候的添加入变量表。
+函数解释如下：
+RCollection<CommonVar> createCollection(String name, String varType) - 返回一个空的
+	RCollection对象，为List还是Vector由varType决定，会加入变量管理。
+RCollection<CommonVar> createCollection(String varType) - 返回一个空的RCollection对
+	象，为List还是Vector由varType决定，不加入变量管理（没有名字）。

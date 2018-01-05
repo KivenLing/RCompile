@@ -1,0 +1,2 @@
+对R语言中的整型变量进行的封装，继承自CommonVar类。
+其classType为numeric，打印时直接返回值（String，并且会去掉多余的0）。

@@ -1,0 +1,11 @@
+输入：全部的词法分析结果，保存在List<WordMean>中。
+成员变量：
+	private int whichWord = 0;//一行中的下标
+	private int whichLine = 0;//标志第几行
+	private List<WordMean> line;//词法分析结果
+	private WordMean words;//保存当前处理的行
+
+处理：开始函数begin，一行行分析（里面只有一个循环，调用commonBegin函数）
+	commonBegin（），首次处理的调用
+	获取下一个token：getNext()，返回值是下一个处理的token‘或者null（没有要处理的了），仅一行。
+	下标会自动增加
