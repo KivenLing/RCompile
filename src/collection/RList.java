@@ -3,7 +3,11 @@ package collection;
 import java.util.ArrayList;
 
 import basicvar.*;
-
+/**
+ * @author 凌凯、周文杰
+ * @since 2018.01.06
+ * 对R的list封装
+ */
 public class RList extends RCollection<CommonVar> {
 
 	public RList() {

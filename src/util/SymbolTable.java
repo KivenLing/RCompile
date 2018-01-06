@@ -1,5 +1,9 @@
 package util;
-
+/**
+ * @author 周文杰
+ * data:2018.01.06
+ * 符号表
+ */
 public enum SymbolTable {
 	//算数运算符
 	math1("+","+",1),
@@ -8,8 +12,8 @@ public enum SymbolTable {
 	math4("/","/",2),
 	math5("%%","%",3),
 	math6("%/%","/",3),
-	math7("(","(",4),
-	math8(")",")",4),
+	math7("(","(",-1),
+	math8(")",")",-1),
 	math9("^","pow",3),
 	math10(".",".",9),
 	//关系运算符
@@ -34,6 +38,7 @@ public enum SymbolTable {
 	//其他运算符
 	other1("\"","\"",9),
 	other2("\'","\'",9),
+	other3("#","#",0),
 	//other1(":")
 	//other2("%in%")
 	//other3("%*%")

@@ -1,20 +1,25 @@
 package view;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import javax.swing.*;
 import javax.swing.text.*;
-
-@SuppressWarnings("serial")
+/**
+ * 
+ * @author 薛浩
+ * date:2018.01.06
+ * 类功能说明：实现前台功能，为后台功能留下接口。
+ * 
+ */
 public class AboutDialog extends JFrame {
-	JTextPane textWritePane = new JTextPane();
+	
 	JTextPane textReadPane = new JTextPane();
+	JTextPane textWritePane = new JTextPane();
+	JScrollPane scrollWritePane = new JScrollPane(textWritePane);
 	JFileChooser filechooser = new JFileChooser();
 
 	public AboutDialog() {
 		super("R语言解释器");
-
 		Action[] actions =
 		{
 				new NewAction(),
@@ -23,14 +28,17 @@ public class AboutDialog extends JFrame {
 				new CutAction(),
 				new CopyAction(),
 				new PasteAction(),
+				new ExitAction(),
 				new AboutAction(),
-				new ExitAction()
+
+
 		};
 
 		setJMenuBar(createJMenuBar(actions));
 		Container container = getContentPane();
+
 		container.add(createJToolBar(actions), BorderLayout.NORTH);
-		container.add(textWritePane, BorderLayout.CENTER);
+		container.add(scrollWritePane, BorderLayout.CENTER);
 		container.add(textReadPane, BorderLayout.SOUTH);
 
 		setSize(1280, 720);
@@ -43,6 +51,7 @@ public class AboutDialog extends JFrame {
 		JMenu menuFile = new JMenu("文件");
 		JMenu menuEdit = new JMenu("编辑");
 		JMenu menuHelp = new JMenu("帮助");
+
 		menuFile.add(new JMenuItem(actions[0]));
 		menuFile.add(new JMenuItem(actions[1]));
 		menuFile.add(new JMenuItem(actions[2]));
@@ -54,17 +63,38 @@ public class AboutDialog extends JFrame {
 		menubar.add(menuFile);
 		menubar.add(menuEdit);
 		menubar.add(menuHelp);
+
 		return menubar;
 	}
 
 	private JToolBar createJToolBar(Action[] actions) {
 		JToolBar toolBar = new JToolBar();
-		for (int i = 0; i < actions.length; i++) {
-			JButton bt = new JButton(actions[i]);
-			bt.setRequestFocusEnabled(false);
-			toolBar.add(bt);
-		}
-	return toolBar;
+		JButton bt = new JButton(actions[0]);
+		bt.setRequestFocusEnabled(false);
+		toolBar.add(bt);
+		JButton bt1 = new JButton(actions[1]);
+		bt1.setRequestFocusEnabled(false);
+		toolBar.add(bt1);
+		JButton bt2 = new JButton(actions[2]);
+		bt2.setRequestFocusEnabled(false);
+		toolBar.add(bt2);
+		JButton bt6 = new JButton(actions[6]);
+		bt6.setRequestFocusEnabled(false);
+		toolBar.add(bt6);
+		JButton bt7 = new JButton(actions[7]);
+		bt7.setRequestFocusEnabled(false);
+		toolBar.add(bt7);
+		JButton bt8 = new JButton("运行");
+		bt8.setRequestFocusEnabled(false);
+		bt8.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+            }
+        });
+		toolBar.add(bt8);
+		return toolBar;
 	}
 
 	class NewAction extends AbstractAction {
@@ -103,7 +133,6 @@ public class AboutDialog extends JFrame {
 			if (i == JFileChooser.APPROVE_OPTION) {
 				File f = filechooser.getSelectedFile();
 				try {
-					@SuppressWarnings("resource")
 					FileOutputStream out = new FileOutputStream(f); 
 					out.write(textWritePane.getText().getBytes());    
 				} catch (Exception ex) {
@@ -157,7 +186,8 @@ public class AboutDialog extends JFrame {
 			JOptionPane.showMessageDialog(AboutDialog.this, "由Java制作的简单的R语言解释器");
 		}
 	}
-
+	
+	
 	public static void main(String[] args) {
 		new AboutDialog();
 	}

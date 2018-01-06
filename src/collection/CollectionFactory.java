@@ -1,5 +1,9 @@
 package collection;
-
+/**
+ * @author 王启航
+ * @since 2018.01.06
+ * 对R的list封装
+ */
 import basicvar.CommonVar;
 import varmanage.VarManager;
 

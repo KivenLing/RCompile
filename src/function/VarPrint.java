@@ -6,6 +6,12 @@ import collection.RList;
 import collection.RVector;
 import varmanage.VarManager;
 
+/**
+ * @author 王启航
+ * @since 2018.01.04
+ * 封装R语言功能中的print和cat
+ * 两个函数，以便调用。
+ */
 public class VarPrint {
 	private VarManager VarMan = null;
 	

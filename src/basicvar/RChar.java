@@ -1,6 +1,9 @@
 package basicvar;
 
-/*
+/**
+ * @author 凌凯
+ * @since 2018.01.06
+ * 对R的list封装
  * R语言字符及字符串变量封装类
  */
 public class RChar extends CommonVar {

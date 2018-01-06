@@ -2,19 +2,28 @@ package util;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import basicvar.CommonVar;
 import exception.WordException;
 import function.TableFunc;
 
+/**
+ * 
+ * @author 陈文儒
+ * data:2018.01.06
+ * 词法分析
+ */
+
 public class SplitToWord {
+	//单例
 	private TableFunc onlyBool = TableFunc.getOnlyBool();
 	private SplitToWord(){}
 	private static SplitToWord onlySplWord = new SplitToWord();
 	public static SplitToWord getOnlySplWord() {
 		return onlySplWord;
 	}
+	
+	//处理函数，并抛出自定义异常
 	public WordMean handel(String[] arrayLine) throws WordException {
 		List<Token> wordAnaliTmp = new ArrayList<Token>();
 		WordMean result = new WordMean();
@@ -61,6 +70,7 @@ public class SplitToWord {
 		return result;
 	}
 
+	//判断类型
 	private String whatType(String word) throws WordException {
 		final String VALUES = "[a-zA-Z_]{1,}_{0,1}[a-zA-z0-9]-*";
 		final String HIDVALUSE = "\\.[a-zA-Z_]{1,}_{0,1}[a-zA-z0-9]-*";

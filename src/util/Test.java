@@ -7,12 +7,17 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import exception.ComputException;
 import exception.WordException;
-
+/**
+ * 
+ * @author 陈文儒
+ * data:2018.01.06
+ * 暂时用于测试
+ */
 public class Test {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		SplitToWord spiltWord = SplitToWord.getOnlySplWord();
 		
 		BufferedReader br = null;
@@ -29,7 +34,12 @@ public class Test {
 				wordResult.add(wm);
 			}
 			a.setWords(wordResult);
-			a.commonBegin();
+			try {
+				a.begin();
+			} catch (ComputException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} catch (IOException | WordException e) {
 			// TODO Auto-generated catch block
 			System.out.println(e.getMessage());

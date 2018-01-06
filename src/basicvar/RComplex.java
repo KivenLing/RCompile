@@ -1,5 +1,7 @@
 package basicvar;
-/*
+/**
+ * @author 凌凯
+ * @since 2018.01.06
  * R复数变量的封装
  */
 public class RComplex extends CommonVar{

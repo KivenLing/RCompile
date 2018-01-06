@@ -1,6 +1,8 @@
 package basicvar;
 
-/*
+/**
+ * @author 凌凯
+ * @since 2018.01.06
  * 对R语言的整型进行封装
  */
 public class RInteger extends CommonVar {

@@ -3,7 +3,12 @@ package collection;
 import java.util.ArrayList;
 
 import basicvar.*;
-
+/**
+ * @author 凌凯、周文杰
+ * @since 2018.01.06
+ * 
+ * 对r向量的封装
+ */
 public class RVector<Var extends CommonVar> extends RCollection<Var> {
 	
 	public RVector() {

@@ -2,7 +2,11 @@ package basicvar;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+/**
+ * @author 凌凯、周文杰
+ * @since 2018.01.06
+ * 简单工厂生产简单R变量
+ */
 public class VarFactory {
 	
 	public CommonVar createVar(String name, String varType, String value) {//throws Exception {

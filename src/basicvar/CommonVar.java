@@ -1,5 +1,7 @@
 package basicvar;
-/*
+/**
+ * @author 凌凯
+ * @since 2018.01.06
  * R基本变量的抽象类
  */
 public abstract class CommonVar {

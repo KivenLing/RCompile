@@ -3,7 +3,11 @@ package collection;
 import java.util.List;
 
 import basicvar.*;
-
+/**
+ * @author 凌凯、周文杰
+ * @since 2018.01.06
+ * 对R的高级数据结构包括list和向量的封装父类
+ */
 public abstract class RCollection<Var extends CommonVar> {
 	public static final String NULL = "NULL";
 	public static final String LIST = "list";
@@ -43,5 +47,9 @@ public abstract class RCollection<Var extends CommonVar> {
 	
 	public boolean contain(Var var) {
 		return this.content.contains(var);
+	}
+	
+	public int sizeof() {
+		return this.content.size();
 	}
 }
