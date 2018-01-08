@@ -3,8 +3,6 @@ package util;
 import java.util.List;
 import java.util.Stack;
 
-import org.jfree.data.Value;
-
 import basicvar.*;
 import collection.RCollection;
 import collection.RVector;
