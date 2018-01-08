@@ -2,14 +2,44 @@ package basicvar;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-/**
- * @author 凌凯、周文杰
- * @since 2018.01.06
- * 简单工厂生产简单R变量
- */
+
+import varmanage.VarManager;
+
 public class VarFactory {
+	private VarManager varMan = null;
 	
-	public CommonVar createVar(String name, String varType, String value) {//throws Exception {
+	public VarFactory() {
+		this.varMan = this.varMan.getInstance(); 
+	}
+	
+	public CommonVar createVar(String name, String varType, String value) {//throws Exception
+		if (varType.equals(CommonVar.CHARACTER)) {
+			CommonVar rCharVar = createChar(value);
+			addToManager(name, rCharVar);
+			return rCharVar;
+		}else if(varType.equals(CommonVar.COMPLEX)) {
+			CommonVar rComplex = createComplex(value);
+			addToManager(name, rComplex);
+			return rComplex;
+		}else if(varType.equals(CommonVar.INTEGER)) {
+			CommonVar rInteger = createInteger(value);
+			addToManager(name, rInteger);
+			return rInteger;
+		}else if(varType.equals(CommonVar.LOGICAL)) {
+			CommonVar rLogical = createLogical(value);
+			addToManager(name, rLogical);
+			return rLogical;
+		}else if (varType.equals(CommonVar.NUMERIC)) {
+			CommonVar rNumric = createNumeric(value);
+			addToManager(name, rNumric);
+			return rNumric;
+		}else {
+			//throw new Exception("鍙橀噺绫诲瀷涓嶅瓨鍦�");
+			return null;
+		}
+	}
+	
+	public CommonVar createVar(String varType, String value) {//throws Exception
 		if (varType.equals(CommonVar.CHARACTER)) {
 			CommonVar rCharVar = createChar(value);
 			return rCharVar;
@@ -26,9 +56,13 @@ public class VarFactory {
 			CommonVar rNumric = createNumeric(value);
 			return rNumric;
 		}else {
-			//throw new Exception("变量类型不存在");
+			//throw new Exception("鍙橀噺绫诲瀷涓嶅瓨鍦�");
 			return null;
 		}
+	}
+	
+	private void addToManager(String name, CommonVar var) {
+		varMan.addCommonVar(name, var);
 	}
 	
 	private RChar createChar(String value) {
@@ -46,7 +80,7 @@ public class VarFactory {
 		return rLogiVar;
 	}
 	
-	//未完成
+	//鏈畬鎴�
 	private RComplex createComplex(String value) {
 		RComplex rCompVar = null;
 		value = value.trim();

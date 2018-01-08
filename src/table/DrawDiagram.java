@@ -16,6 +16,7 @@ import basicvar.RNumeric;
 import collection.CollectionFactory;
 import collection.RCollection;
 import collection.RVector;
+import function.FuncConstant;
 import varmanage.VarManager;
 
 /**
@@ -50,11 +51,11 @@ public class DrawDiagram {
 	//对外接口，筛选调用生成函数。
 	public void creatChart(String functionName, String Content) {
 		try{
-			if (functionName.equals("barplot")){
+			if (functionName.equals(FuncConstant.BARPLOT)){
 				this.createBarChart(Content);
-			} else if (functionName.equals("pie")) {
+			} else if (functionName.equals(FuncConstant.PIE)) {
 				this.createPieChart(Content);
-			} else if (functionName.equals("plot")) {
+			} else if (functionName.equals(FuncConstant.PLOT)) {
 				this.createSerChart(Content);
 			} else {
 				//抛出异常

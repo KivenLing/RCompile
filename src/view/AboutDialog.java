@@ -11,11 +11,13 @@ import javax.swing.text.*;
  * 类功能说明：实现前台功能，为后台功能留下接口。
  * 
  */
+
 public class AboutDialog extends JFrame {
 	
 	JTextPane textReadPane = new JTextPane();
 	JTextPane textWritePane = new JTextPane();
 	JScrollPane scrollWritePane = new JScrollPane(textWritePane);
+
 	JFileChooser filechooser = new JFileChooser();
 
 	public AboutDialog() {
@@ -36,11 +38,11 @@ public class AboutDialog extends JFrame {
 
 		setJMenuBar(createJMenuBar(actions));
 		Container container = getContentPane();
+		setLayout(new GridLayout(2,0));
 
-		container.add(createJToolBar(actions), BorderLayout.NORTH);
-		container.add(scrollWritePane, BorderLayout.CENTER);
-		container.add(textReadPane, BorderLayout.SOUTH);
-
+		container.add(scrollWritePane);
+		container.add(textReadPane);
+		textReadPane.setText("控制台：");
 		setSize(1280, 720);
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -51,7 +53,15 @@ public class AboutDialog extends JFrame {
 		JMenu menuFile = new JMenu("文件");
 		JMenu menuEdit = new JMenu("编辑");
 		JMenu menuHelp = new JMenu("帮助");
-
+		JMenu menuRun = new JMenu("运行");
+		JButton bt8 = new JButton("运行");
+		bt8.setRequestFocusEnabled(false);
+		bt8.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+            }
+        });
 		menuFile.add(new JMenuItem(actions[0]));
 		menuFile.add(new JMenuItem(actions[1]));
 		menuFile.add(new JMenuItem(actions[2]));
@@ -59,43 +69,16 @@ public class AboutDialog extends JFrame {
 		menuEdit.add(new JMenuItem(actions[4]));
 		menuEdit.add(new JMenuItem(actions[5]));
 		menuEdit.add(new JMenuItem(actions[6]));
+		menuRun.add(bt8);
 		menuHelp.add(new JMenuItem(actions[7]));
 		menubar.add(menuFile);
 		menubar.add(menuEdit);
 		menubar.add(menuHelp);
-
+		menubar.add(menuRun);
 		return menubar;
 	}
 
-	private JToolBar createJToolBar(Action[] actions) {
-		JToolBar toolBar = new JToolBar();
-		JButton bt = new JButton(actions[0]);
-		bt.setRequestFocusEnabled(false);
-		toolBar.add(bt);
-		JButton bt1 = new JButton(actions[1]);
-		bt1.setRequestFocusEnabled(false);
-		toolBar.add(bt1);
-		JButton bt2 = new JButton(actions[2]);
-		bt2.setRequestFocusEnabled(false);
-		toolBar.add(bt2);
-		JButton bt6 = new JButton(actions[6]);
-		bt6.setRequestFocusEnabled(false);
-		toolBar.add(bt6);
-		JButton bt7 = new JButton(actions[7]);
-		bt7.setRequestFocusEnabled(false);
-		toolBar.add(bt7);
-		JButton bt8 = new JButton("运行");
-		bt8.setRequestFocusEnabled(false);
-		bt8.addActionListener(new ActionListener() {
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                
-            }
-        });
-		toolBar.add(bt8);
-		return toolBar;
-	}
 
 	class NewAction extends AbstractAction {
 		public NewAction() {

@@ -7,18 +7,20 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import basicvar.RBoolean;
+import basicvar.RNumeric;
+import exception.CommBeginException;
 import exception.ComputException;
+import exception.SyntaxException;
 import exception.WordException;
-/**
- * 
- * @author 陈文儒
- * data:2018.01.06
- * 暂时用于测试
- */
+import varmanage.VarManager;
+
 public class Test {
 
 	public static void main(String[] args) {
-		SplitToWord spiltWord = SplitToWord.getOnlySplWord();
+		// TODO Auto-generated method stub
+		
+SplitToWord spiltWord = SplitToWord.getOnlySplWord();
 		
 		BufferedReader br = null;
 		try {
@@ -27,19 +29,25 @@ public class Test {
 			LanguageAna a = LanguageAna.getLa();
 			List<WordMean> wordResult = new ArrayList<WordMean>();
 			while(bufferLine!=null){
-				bufferLine.trim();
+				bufferLine = bufferLine.replaceAll(" ", "");
+				bufferLine = bufferLine.replaceAll("	", "");
 				WordMean wm = spiltWord.handel(bufferLine.split(""));
-				System.out.println(wm.getWord());
 				bufferLine = br.readLine();
 				wordResult.add(wm);
 			}
+			//初始化语法分析的词法分析
 			a.setWords(wordResult);
-			try {
-				a.begin();
-			} catch (ComputException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		
+				//语法测试
+				try {
+					a.begin();
+				} catch (ComputException | SyntaxException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				VarManager vma = VarManager.getInstance();
+				//System.out.println(((RBoolean)vma.getCommonVar("linkai")).getContent());
+			
 		} catch (IOException | WordException e) {
 			// TODO Auto-generated catch block
 			System.out.println(e.getMessage());
@@ -51,6 +59,7 @@ public class Test {
 				e.printStackTrace();
 			}
 		}
+		
 	}
 
 }

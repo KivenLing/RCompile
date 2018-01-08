@@ -13,105 +13,156 @@ import varmanage.VarManager;
  * 两个函数，以便调用。
  */
 public class VarPrint {
+	
 	private VarManager VarMan = null;
+	
+	private String result;
 	
 	public VarPrint() {
 		this.VarMan = VarManager.getInstance();
+		this.result = "";
 	}
 	
-	public void printVar(String varName) {
+	public String printVar(CommonVar var) {
+		this.result = "";
+		this.result += this.printCommonVar(var);
+		this.result += "\n";
+		System.out.print("\n");
+		return this.result;
+	}
+	
+	public String printVar(RCollection<CommonVar> var) {
+		this.result = "";
+		this.result += this.printCollectionVar(var);
+		this.result += "\n";
+		System.out.print("\n");
+		return this.result;
+	}
+	
+	public String printVar(String varName) {
+		this.result = "";
 		String varType = this.VarMan.varContain(varName);
 		if (varType == null){
-			System.out.println("这个变量就不存在 ");
+			this.result += "[1] " + varName + "\n";
+			System.out.println("[1] " + varName);
 		} else {
 			if (varType.equals(VarManager.COMMONVAR)) {
-				this.printCommonVar(this.VarMan.getCommonVar(varName));
+				this.result += this.printCommonVar(this.VarMan.getCommonVar(varName));
 				System.out.print("\n");
+				this.result += "\n";
 			} else if (varType.equals(VarManager.COLLECTION)) {
-				this.printCollectionVar(this.VarMan.getCollection(varName));
+				this.result += this.printCollectionVar(this.VarMan.getCollection(varName));
 				System.out.print("\n");
+				this.result += "\n";
 			} else {
 				System.out.println("这明明是一个不可能发生的错误 ");
 			}
 		}
+		return this.result;
 	}
 	
-	private void printCommonVar(CommonVar var) {
+	private String printCommonVar(CommonVar var) {
+		String commres = "[1] " + var.toString();
 		System.out.print("[1] " + var.toString());
+		return commres;
 	}
 	
-	private void printCollectionVar(RCollection<CommonVar> var) {
+	private String printCollectionVar(RCollection<CommonVar> var) {
 		String classType = var.getClassType();
+		String collres = "";
 		if (classType.equals(RCollection.NULL)) {
+			collres = "[1]\n";
 			System.out.println("[1]");
 		} else if (classType.equals(RCollection.LIST)){
-			this.printList((RList) var);
+			collres += this.printList((RList) var);
 		} else {
-			this.printVector((RVector<CommonVar>) var);
+			collres += this.printVector((RVector<CommonVar>) var);
 		}
+		return collres;
 		
 	}
 	
-	private void printVector(RVector<CommonVar> var) {
+	private String printVector(RVector<CommonVar> var) {
+		String vecres = "";
 		String[] part = var.toString().split(" ");
 		int len = part.length;
 		System.out.print("[1]");
+		vecres += "[1]";
 		for (int i = 1; i < len; i++) {
 			System.out.print(" " + part[i]);
+			vecres += " " + part[i];
 		}
+		return vecres;
 	}
 	
-	private void printList(RList var) {
+	private String printList(RList var) {
+		String listres = "";
 		String[] part = var.toString().split(" ");
 		int len = part.length;
 		for (int i = 1; i < len; i++) {
 			System.out.println("[[" + i + "]]");
+			listres += "[[" + i + "]]\n";
 			System.out.println("[1]" + " " + part[i]);
+			listres += "[1]" + " " + part[i] + "\n";
 		}
+		return listres;
 	}
 	
-	public void catVar(String varList) {
+	public String catVar(String varList) {
+		this.result = "";
 		varList = varList.replaceAll(" ","");
 		varList = varList.replaceAll("	","");
 		String[] var = varList.split(",");
 		System.out.print("[1]");
+		this.result += "[1]";
 		for(String varName : var) {
 			String varType = this.VarMan.varContain(varName);
 			if (varType == null){
 				System.out.print("这个变量不存在! ");
+				//EXCEPTION
 			} else {
 				if (varType.equals(VarManager.COMMONVAR)) {
-					this.catCommonVar(this.VarMan.getCommonVar(varName));
+					this.result += this.catCommonVar(this.VarMan.getCommonVar(varName));
 				} else if (varType.equals(VarManager.COLLECTION)) {
-					this.catCollectionVar(this.VarMan.getCollection(varName));
+					this.result += this.catCollectionVar(this.VarMan.getCollection(varName));
 				} else {
 					System.out.print("这明明是一个不可能发生的错误");
 				}
 			}
 		}
+		return this.result;
 	}
 	
-	private void catCommonVar(CommonVar var) {
+	private String catCommonVar(CommonVar var) {
+		String comcat = "";
 		System.out.print(" " + var.toString());
+		comcat = " " + var.toString();
+		return comcat;
 	}
 	
-	private void catCollectionVar(RCollection<CommonVar> var) {
+	private String catCollectionVar(RCollection<CommonVar> var) {
+		String collcat = "";
 		String classType = var.getClassType();
 		if (classType.equals(RCollection.NULL)) {
-			return;
+			return collcat;
 		} else if (classType.equals(RCollection.LIST)){
 			System.out.println("对List不提供支持 ");
+			collcat += "\tR语言cat方法对List不提供支持\t";
 		} else {
-			this.catVector((RVector<CommonVar>) var);
+			collcat += this.catVector((RVector<CommonVar>) var);
 		}
+		return collcat;
 	}
 	
-	private void catVector(RVector<CommonVar> var) {
+	private String catVector(RVector<CommonVar> var) {
+		String veccat = "";
 		String[] part = var.toString().split(" ");
 		int len = part.length;
 		for (int i = 1; i < len; i++) {
 			System.out.print(" " + part[i]);
+			veccat += " " + part[i];
 		}
+		return veccat;
 	}
 	
 }

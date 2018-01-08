@@ -1,10 +1,5 @@
 package util;
-/**
- * 
- * @author 陈文儒
- * data:2018.01.06
- * 词法分析结果的封装
- */
+
 public class Token {
 	private String word;
 	private String wordMean;

@@ -2,17 +2,11 @@ package util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import basicvar.CommonVar;
 import exception.WordException;
 import function.TableFunc;
-
-/**
- * 
- * @author 陈文儒
- * data:2018.01.06
- * 词法分析
- */
 
 public class SplitToWord {
 	//单例
@@ -43,7 +37,6 @@ public class SplitToWord {
 					}
 					wordAnaliTmp.add(new Token(word,CommonVar.CHARACTER));
 					word="";
-					i++;
 					continue;
 				}
 				while(onlyBool.ifexit(word)) {
@@ -60,27 +53,30 @@ public class SplitToWord {
 				wordAnaliTmp.add(new Token(word,"symbol"));
 				word="";
 			} else {
+				if(word.equals("else")) {
+					wordAnaliTmp.add(new Token(word,whatType(word)));
+					word = "";
+				}
 				word += arrayLine[i];
 			}
 		}
 		if(!word.equals("")) {
 			wordAnaliTmp.add(new Token(word,whatType(word)));
-		}                                  
+		}   
 		result.setWord(wordAnaliTmp);
 		return result;
 	}
 
 	//判断类型
 	private String whatType(String word) throws WordException {
-		final String VALUES = "[a-zA-Z_]{1,}_{0,1}[a-zA-z0-9]-*";
+		final String VALUES = "[a-zA-Z_](_{0,1}[a-zA-z0-9]){0,}";
 		final String HIDVALUSE = "\\.[a-zA-Z_]{1,}_{0,1}[a-zA-z0-9]-*";
-		final String NUMBERS = "[0-9]-*{1,}(.[0-9]-*){0,1}";
-		final String INTEGER = "[0-9]-*{1,}(.[0-9]-*){0,1}L";
-		final String COMPLEX = "[0-9]-*{1,}(.[0-9]-*){0,1}i";
+		//final String NUMBERS = "[0-9]-*{1,}(.[0-9]-*){0,1}[0-9]{0,}";
+		final String NUMBERS = "^\\d+(\\.\\d+)?$";
+		final String INTEGER = "[0-9]-*{1,}L";
+		final String COMPLEX = "[0-9]-*{1,}(.[0-9]-*){0,1}[0-9]{0,}i";
 		String typeResult="";
-		if(word.matches(VALUES)) {
-			typeResult = CommonVar.COMMONVAR;
-		} else if(word.matches(NUMBERS)) {
+		if(word.matches(NUMBERS)) {
 			typeResult = CommonVar.NUMERIC;
 		} else if(word.matches(HIDVALUSE)) {
 			typeResult = CommonVar.HIDEVAR;
@@ -92,9 +88,11 @@ public class SplitToWord {
 			typeResult = CommonVar.LOGICAL;
 		} else if(word.matches(COMPLEX)) {
 			typeResult = CommonVar.COMPLEX;
+		} else if(word.matches(VALUES)) {
+			typeResult = CommonVar.COMMONVAR;
 		} else {
 			throw new WordException(word);
-		}
+		} 
 		return typeResult;
 	}
 }

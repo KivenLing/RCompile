@@ -1,9 +1,5 @@
 package function;
-/**
- * @author 周文杰
- * data:2018.01.06
- * 三张表的功能接口
- */
+
 import util.FuncTable;
 import util.KeywordTable;
 import util.SymbolTable;
@@ -20,13 +16,22 @@ public class TableFunc {
 	public int getPrio(String keyword) {
 		int prio = 0;
 		for(SymbolTable Rkeyword : SymbolTable.values()) {
-			if(Rkeyword.getRSgin().toString().indexOf(keyword) != -1) {
+			if(Rkeyword.getRSgin().toString().equals(keyword)) {
 				prio = Rkeyword.getPriority();
 			}
 		}
 		return prio;
 	}
 	
+	public static int getFunctionNum(String keyword) {
+		String res = null;
+		for(SymbolTable name : SymbolTable.values()) {
+			if(name.getRSgin().equals(keyword)) {
+				res = name.getJavaSign();
+			}
+		}
+		return Integer.parseInt(res);
+	}
 	//判断是否在符号表中
 	public boolean ifexit(String keyword) {
 		for(SymbolTable Rkeyword : SymbolTable.values()) {

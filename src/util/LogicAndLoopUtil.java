@@ -11,6 +11,7 @@ public class LogicAndLoopUtil {
 	 *列出静态不能变的的关键字
 	 * 以及符号
 	 */
+	public static final boolean DEFAULTELSEBOOL = true;
 	public static final String IF = "if";
 	public static final String ELSE = "else";
 	public static final String BREAK = "break";
@@ -58,5 +59,11 @@ public class LogicAndLoopUtil {
 	
 	public static boolean isRightLB(String s) {
 		return RIGHTLB.equals(s);
+	}
+	
+	public static boolean containKeyWordOfLB(String s) {
+		if(isIF(s) || isBreak(s) || isRepeat(s))
+			return true;
+		return false;
 	}
 }

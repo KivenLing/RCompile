@@ -1,12 +1,9 @@
 package basicvar;
 
-/**
- * @author 凌凯
- * @since 2018.01.06
+/*
  * R语言逻辑判断变量封装
  */
 public class RBoolean extends CommonVar {
-	//R的布尔字符串形式
 	public static final String TRUE = "TRUE";
 	public static final String FALSE = "FALSE";
 	//变量内容
@@ -17,7 +14,15 @@ public class RBoolean extends CommonVar {
 		this.classType = CommonVar.LOGICAL;
 		this.content = contentVal;
 	}
-
+	//添加的构造函数
+	public RBoolean(String content) {
+		this.classType = CommonVar.LOGICAL;
+		boolean contentVal = false;
+		if(content.equals("TRUE")) {
+			contentVal = true;
+		}
+		this.content = contentVal;
+	}
 	//返回内容，为boolean
 	public boolean getContent() {
 		return this.content;
@@ -26,9 +31,9 @@ public class RBoolean extends CommonVar {
 	@Override
 	public String toString() {
 		if (this.content == true) {
-			return RBoolean.TRUE;
+			return "TRUE";
 		} else {
-			return RBoolean.FALSE;
+			return "FALSE";
 		} 
 	}
 	

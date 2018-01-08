@@ -64,8 +64,31 @@ public class VarManager {
 	
 	public String printVar() {
 		String Answer = "";
-		Answer += comVarMan.printElement();
-		Answer += collMan.printElement();
+		String[] comVar = comVarMan.printElement().split(" ");
+		for (String var : comVar) {
+			if (var.startsWith(".")) continue;
+			else Answer += var + " ";
+		}
+		String[] collVar = collMan.printElement().split(" ");
+		for (String var : collVar) {
+			if (var.startsWith(".")) continue;
+			else Answer += var + " ";
+		}
+		return Answer;
+	}
+	
+	public String printVar(boolean Flag) {
+		String Answer = "";
+		String[] comVar = comVarMan.printElement().split(" ");
+		for (String var : comVar) {
+			if (var.startsWith(".1")) continue;
+			else Answer += var + " ";
+		}
+		String[] collVar = collMan.printElement().split(" ");
+		for (String var : collVar) {
+			if (var.startsWith(".1")) continue;
+			else Answer += var + " ";
+		}
 		return Answer;
 	}
 }

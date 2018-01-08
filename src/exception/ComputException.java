@@ -1,12 +1,5 @@
 package exception;
 
-/**
- * 
- * @author 陈文儒
- * data:2018.01.06
- * 运算异常类
- */
-@SuppressWarnings("serial")
 public class ComputException extends Exception{
 
 	public ComputException(String message) {
