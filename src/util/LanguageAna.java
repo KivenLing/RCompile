@@ -1,13 +1,25 @@
 package util;
 
+import java.awt.Color;
 import java.util.List;
 import java.util.Stack;
+
+import javax.swing.JTextPane;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
+
+import org.jfree.data.Value;
 
 import basicvar.*;
 import collection.RCollection;
 import collection.RVector;
 import exception.ComputException;
 import exception.SyntaxException;
+import exception.VariableNotFoundException;
 import function.FuncConstant;
 import function.ListL;
 import function.ListVar;
@@ -39,6 +51,8 @@ public class LanguageAna {
 	private List<WordMean> line;
 	//每一行的暂存
 	private WordMean words;
+	//引用界面控制台
+	private JTextPane textReadPane = null;
 	//引用单例表
 	private TableFunc onlyBool = TableFunc.getOnlyBool();
 	//引用单例变量管理
@@ -46,12 +60,17 @@ public class LanguageAna {
 	//循环的语句结束位置的栈
 	private Stack<PairOfEndMess> loopStack = new Stack<PairOfEndMess>();
 	//将构造器私有化
-	private LanguageAna(){}
+	//private LanguageAna(){}
 	//生成单例
-	private static LanguageAna la = new LanguageAna();
+	//private static LanguageAna la = new LanguageAna();
 	//获取单例
-	public static LanguageAna getLa() {
-		return la;
+	//public static LanguageAna getLa() {
+	//	return la;
+	//}
+
+	//引用界面控制台
+	public void setTextReadPane(JTextPane textReadPane) {
+		this.textReadPane = textReadPane;
 	}
 
 	//输入词法分析结果
@@ -71,7 +90,7 @@ public class LanguageAna {
 	}
 	
 	//语法的主控（按行分析）
-	public void begin() throws ComputException, SyntaxException { 
+	public void begin() throws ComputException, SyntaxException, VariableNotFoundException { 
 		while(whichLine < line.size()) {
 			words = line.get(whichLine);
 			whichWord = 0;
@@ -81,9 +100,12 @@ public class LanguageAna {
 	}
 	
 	 //语法分析的一行的开始
-	public void commonBegin() throws ComputException, SyntaxException {
+	public void commonBegin() throws ComputException, SyntaxException, VariableNotFoundException {
 		Token token = getNextToken();
 		//判断是不是变量或者关键字
+		if(token.getWord().equals("#")) {
+			return;
+		}
 		if(token.getWordMean().equals(CommonVar.COMMONVAR)) { 
 			
 			//判断是否为关键字
@@ -118,8 +140,8 @@ public class LanguageAna {
 		return (whichWord==0 && wds.equals("symbol") && !(word.equals("+")||word.equals("-")));
 	}
 	
-	// 运算操作
-	private String mathOpreate() throws ComputException {
+	//---------------------------------------CWR---------- 运算操作 ----------------------------------
+	private String mathOpreate() throws ComputException, VariableNotFoundException {
 		final String localCollection = "localCollection";
 		Token token;
 		StackCWR valueStack = new StackCWR(); // 变量栈
@@ -143,6 +165,9 @@ public class LanguageAna {
 				// 数字处理
 				valueStack.push(token.getWord());
 				valueMean.push(token.getWordMean());
+			} else if (token.getWordMean().equals(CommonVar.CHARACTER)) {
+				valueStack.push(token.getWord());
+				valueMean.push(CommonVar.CHARACTER);
 			} else if (token.getWordMean().equals("symbol")) {
 				// 符号处理
 				String wd = token.getWord();
@@ -258,7 +283,9 @@ public class LanguageAna {
 					} else {
 						if (type.equals(CommonVar.LOGICAL)) {
 							varManager.addCommonVar(num2, new RBoolean(num1));
-						} else {
+						} else if(type.equals(CommonVar.CHARACTER)) {
+							varManager.addCommonVar(num2, new RChar(num1));
+						} else{
 							varManager.addCommonVar(num2, new RNumeric(Double.parseDouble(num1)));
 						}
 
@@ -435,12 +462,14 @@ public class LanguageAna {
 				break;
 			case 14:
 				String num = "";
-				for(int i=(int)Double.parseDouble(num1); i<=(int)Double.parseDouble(num2);i++) {
+				for(int i=(int) (Double.parseDouble(num1)/1); i<=Double.parseDouble(num2);i++) {
 					num += "," + i;
 				}
-				num.substring(1,num.length());
+				System.out.println(num);
+				num=num.substring(1,num.length());
+				System.out.println(num);
 				VecC vc = new VecC();
-				result = vc.c(num, CommonVar.INTEGER);
+				result = vc.c(num, CommonVar.NUMERIC);
 				break;
 			case 15:
 				result = "FALSE";
@@ -470,6 +499,7 @@ public class LanguageAna {
 				throw new ComputException("line:" + (whichLine + 1) + " " + "运算没有匹配到运算符" + sym);
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new ComputException("line:" + (whichLine + 1) + " " + "运算类型不匹配");
 		}
 		if (result.equals("TRUE") || result.equals("FALSE")) {
@@ -547,11 +577,30 @@ public class LanguageAna {
 		}
 		return result;
 	}
+	//---------------------------------------CWR---------- 运算操作 ----------------------------------
+
+	//---------------------------------------CWR---------- 界面连通 ----------------------------------
+	private void appendToPane(JTextPane tp, String msg, Color c) {
+		StyleContext sc = StyleContext.getDefaultStyleContext();
+		AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
+
+		aset = sc.addAttribute(aset, StyleConstants.FontFamily, "宋体");
+		aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
+		aset = sc.addAttribute(aset, StyleConstants.FontSize, 30);
+		Document docs = tp.getDocument();
+		try {
+			docs.insertString(docs.getLength(), msg, aset);
+		} catch (BadLocationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	//---------------------------------------CWR---------- 界面连通 ----------------------------------
 	/*
 	 * 分支语句的处理
 	 */
 	
-	private void logicalStruct(boolean elseBool) throws SyntaxException, ComputException {
+	private void logicalStruct(boolean elseBool) throws SyntaxException, ComputException, VariableNotFoundException {
 		Token curToken = this.getNextToken();
 		//当前的符号不符合语法要求，if后一定跟小括号“(”
 		if(curToken == null || !LogicAndLoopUtil.isLeftSB(curToken.getWord()))
@@ -637,7 +686,7 @@ public class LanguageAna {
 	}
 	
 	//repeat循环语句分析
-	private void repeatLoop() throws SyntaxException, ComputException {
+	private void repeatLoop() throws SyntaxException, ComputException, VariableNotFoundException {
 		if (!this.goNextLine())
 			throw new SyntaxException("语法错误在" + (this.whichLine + 1) + "行");
 		int curIndex0fToken = whichWord;
@@ -757,8 +806,9 @@ public class LanguageAna {
 	}
 	//------------------------------------------------------MR.SAIL-------------------------------------------------------//
 	
+	
 	//R语言中对自身所含基本函数调用的处理
-	private String fuctionOperation() {
+	private String fuctionOperation() throws VariableNotFoundException {
 		Token currToken = this.getNextToken();
 		String funcName = currToken.getWord();
 		if (!this.onlyBool.if_func_bool(funcName)) {
@@ -769,7 +819,8 @@ public class LanguageAna {
 		return result;
 	}
 	
-	private String commonFunc(String funcName) {
+	//处理最基本函数，仅仅调用提供的变量的部分自含内容即可
+	private String commonFunc(String funcName) throws VariableNotFoundException {
 		if (funcName.equals(FuncConstant.CLASS)) {
 			VarClass vclass = new VarClass();
 			String classRes = vclass.Class(this.handleParam());
@@ -784,24 +835,28 @@ public class LanguageAna {
 			} else {
 				lsRes += lsVar.ls(param);
 			}
+			appendToPane(textReadPane, lsRes, Color.BLACK);
 //			VarPrint vp = new VarPrint();
 //			vp.printVar(lsRes);
 			return lsRes;
 		} else if (funcName.equals(FuncConstant.PRINT)) {
 			VarPrint varPrinter = new VarPrint();
 			String printRes = varPrinter.printVar(this.handleParam());
+			appendToPane(textReadPane, printRes, Color.BLACK);
 //			System.out.println(printRes);
 			return printRes;
 		} else if (funcName.equals(FuncConstant.CAT)) {
 			VarPrint varPrinter = new VarPrint();
 			String catRes = varPrinter.catVar(this.handleParam());
+			appendToPane(textReadPane, catRes, Color.BLACK);
 			return catRes;
 		} else {
 			return this.createFunc(funcName);
 		}
 	}
 	
-	private String createFunc(String funcName) {
+	//处理生成变量操作
+	private String createFunc(String funcName) throws VariableNotFoundException {
 		if (funcName.equals(FuncConstant.C)) {
 			VecC cfunc = new VecC();
 			String classType = this.CGetClassType();
@@ -825,7 +880,8 @@ public class LanguageAna {
 		}
 	}
 	
-	private String stringFunc(String funcName) {
+	//对字符串进行处理的函数集合
+	private String stringFunc(String funcName) throws VariableNotFoundException {
 		if (funcName.equals(FuncConstant.PASTE)) {
 			VarPaste paster = new VarPaste();
 			String pasteRes = paster.RPaste(this.handleParam());
@@ -847,7 +903,8 @@ public class LanguageAna {
 		}
 	}
 	
-	private String daigrameFunc(String funcName) {
+	//图表绘制函数调用机制集合
+	private String daigrameFunc(String funcName) throws VariableNotFoundException {
 		DrawDiagram drawDiagrame = new DrawDiagram();
 		if (funcName.equals(FuncConstant.PLOT)) {
 			drawDiagrame.creatChart(FuncConstant.PLOT, this.handleParam());
@@ -866,7 +923,8 @@ public class LanguageAna {
 		return "";
 	}
 	
-	private String handleParam() {
+	//迭代形式处理参数，参数中加入函数时，返回不是非法参数时，可以执行
+	private String handleParam() throws VariableNotFoundException {
 		Token currToken = this.getNextToken();
 		String param = "";
 		if (!this.matchSymbol(currToken.getWord(), "(")) {
@@ -892,6 +950,7 @@ public class LanguageAna {
 		return param;
 	}
 	
+	//创建函数C的类型获取
 	private String CGetClassType() {
 		Token currToken = this.getNextToken();
 		if (!this.matchSymbol(currToken.getWord(), "(")) {
@@ -903,6 +962,7 @@ public class LanguageAna {
 		return currToken.getWordMean();
 	}
 	
+	//创建函数list的类型获取
 	private String ListGetClassType() {
 		Token currToken = this.getNextToken();
 		String paraRes = "";
@@ -925,10 +985,10 @@ public class LanguageAna {
 		return paraRes;
 	}
 	
+	//匹配符号所写，用于寻找指定参数。
 	private boolean matchSymbol(String symbol, String target) {
 		return symbol.equals(target);
 	}
-	
 	//------------------------------------------------------MR.SAIL-------------------------------------------------------//
 	
 }

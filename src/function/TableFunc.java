@@ -3,7 +3,12 @@ package function;
 import util.FuncTable;
 import util.KeywordTable;
 import util.SymbolTable;
-
+/**
+ * 
+ * @author 周文杰
+ * @since 2018.01.06
+ * 对三张表提供公有接口
+ */
 public class TableFunc {
 	private TableFunc() {}
 	private static TableFunc onlyBool = new TableFunc();

@@ -1,5 +1,9 @@
 package util;
-
+/**
+ * @author 周文杰
+ * data:2018.01.07
+ * 关键字表
+ */
 //关键字表
 public enum KeywordTable {
 	keyword1("if"),

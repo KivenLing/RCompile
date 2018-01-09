@@ -3,12 +3,15 @@ package function;
 import basicvar.CommonVar;
 import basicvar.VarFactory;
 import collection.CollectionFactory;
-import collection.RCollection;
-import collection.RList;
 import collection.RVector;
 import util.SysVarList;
 import varmanage.VarManager;
-
+/**
+ * 
+ * @author 周文杰
+ * @since 2018.01.08
+ * 对R语言中C函数封装 
+ */
 public class VecC {
 	
 	private VarManager varMan;
@@ -26,6 +29,7 @@ public class VecC {
 		this.collFac = new CollectionFactory();
 	}
 	
+	//C函数公有接口，接受一个string表示vector的类型，还有向量的属性值
 	public String c(String Value, String classType) {
 		String[] vlList = Value.split(",");
 		int size = vlList.length;
@@ -37,6 +41,8 @@ public class VecC {
 		}
 		return name;
 	}
+	
+	//其他组员另外加上，用于语法分析
 	public RVector<CommonVar> createVector(String[] vlList, String vType) {
 		int size = vlList.length;
 		RVector<CommonVar> tmpRVec = (RVector<CommonVar>) this.collFac.createCollection("");
