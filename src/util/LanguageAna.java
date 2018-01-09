@@ -18,6 +18,7 @@ import basicvar.*;
 import collection.RCollection;
 import collection.RVector;
 import exception.ComputException;
+import exception.IlleagelDiagrameSyntaxException;
 import exception.SyntaxException;
 import exception.VariableNotFoundException;
 import function.FuncConstant;
@@ -90,7 +91,7 @@ public class LanguageAna {
 	}
 	
 	//语法的主控（按行分析）
-	public void begin() throws ComputException, SyntaxException, VariableNotFoundException { 
+	public void begin() throws ComputException, SyntaxException, VariableNotFoundException, IlleagelDiagrameSyntaxException { 
 		while(whichLine < line.size()) {
 			words = line.get(whichLine);
 			whichWord = 0;
@@ -100,7 +101,7 @@ public class LanguageAna {
 	}
 	
 	 //语法分析的一行的开始
-	public void commonBegin() throws ComputException, SyntaxException, VariableNotFoundException {
+	public void commonBegin() throws ComputException, SyntaxException, VariableNotFoundException, IlleagelDiagrameSyntaxException {
 		Token token = getNextToken();
 		//判断是不是变量或者关键字
 		if(token.getWord().equals("#")) {
@@ -141,7 +142,7 @@ public class LanguageAna {
 	}
 	
 	//---------------------------------------CWR---------- 运算操作 ----------------------------------
-	private String mathOpreate() throws ComputException, VariableNotFoundException {
+	private String mathOpreate() throws ComputException, VariableNotFoundException, IlleagelDiagrameSyntaxException {
 		final String localCollection = "localCollection";
 		Token token;
 		StackCWR valueStack = new StackCWR(); // 变量栈
@@ -600,7 +601,7 @@ public class LanguageAna {
 	 * 分支语句的处理
 	 */
 	
-	private void logicalStruct(boolean elseBool) throws SyntaxException, ComputException, VariableNotFoundException {
+	private void logicalStruct(boolean elseBool) throws SyntaxException, ComputException, VariableNotFoundException, IlleagelDiagrameSyntaxException {
 		Token curToken = this.getNextToken();
 		//当前的符号不符合语法要求，if后一定跟小括号“(”
 		if(curToken == null || !LogicAndLoopUtil.isLeftSB(curToken.getWord()))
@@ -669,14 +670,14 @@ public class LanguageAna {
 								return;
 							goNextLine();
 						}
+						return;
 					}
 				} else {// 判断为false，直接忽略中间部分
 					whichLine = endMess.getIndexOfLine();
 					whichWord = endMess.getIndexOfToken();
 					// 此时索引值指向语句块结束的标志“}”下一行位置
-				}
-				if (!goNextLine())
 					return;
+				}
 			}else//一般会报错，最好R不要有这种代码格式
 				throw new SyntaxException("语法错误在" + (this.whichLine + 1) + "行");
 		}else {//没有匹配到else关键字
@@ -686,7 +687,7 @@ public class LanguageAna {
 	}
 	
 	//repeat循环语句分析
-	private void repeatLoop() throws SyntaxException, ComputException, VariableNotFoundException {
+	private void repeatLoop() throws SyntaxException, ComputException, VariableNotFoundException, IlleagelDiagrameSyntaxException {
 		if (!this.goNextLine())
 			throw new SyntaxException("语法错误在" + (this.whichLine + 1) + "行");
 		int curIndex0fToken = whichWord;
@@ -711,6 +712,7 @@ public class LanguageAna {
 				//whichLine会大于endMess.getIndexOfLine()
 			}
 		}
+		goLastLine();
 		return;
 	}
 	
@@ -808,7 +810,7 @@ public class LanguageAna {
 	
 	
 	//R语言中对自身所含基本函数调用的处理
-	private String fuctionOperation() throws VariableNotFoundException {
+	private String fuctionOperation() throws VariableNotFoundException, IlleagelDiagrameSyntaxException {
 		Token currToken = this.getNextToken();
 		String funcName = currToken.getWord();
 		if (!this.onlyBool.if_func_bool(funcName)) {
@@ -820,7 +822,7 @@ public class LanguageAna {
 	}
 	
 	//处理最基本函数，仅仅调用提供的变量的部分自含内容即可
-	private String commonFunc(String funcName) throws VariableNotFoundException {
+	private String commonFunc(String funcName) throws VariableNotFoundException, IlleagelDiagrameSyntaxException {
 		if (funcName.equals(FuncConstant.CLASS)) {
 			VarClass vclass = new VarClass();
 			String classRes = vclass.Class(this.handleParam());
@@ -856,7 +858,7 @@ public class LanguageAna {
 	}
 	
 	//处理生成变量操作
-	private String createFunc(String funcName) throws VariableNotFoundException {
+	private String createFunc(String funcName) throws VariableNotFoundException, IlleagelDiagrameSyntaxException {
 		if (funcName.equals(FuncConstant.C)) {
 			VecC cfunc = new VecC();
 			String classType = this.CGetClassType();
@@ -881,7 +883,7 @@ public class LanguageAna {
 	}
 	
 	//对字符串进行处理的函数集合
-	private String stringFunc(String funcName) throws VariableNotFoundException {
+	private String stringFunc(String funcName) throws VariableNotFoundException, IlleagelDiagrameSyntaxException {
 		if (funcName.equals(FuncConstant.PASTE)) {
 			VarPaste paster = new VarPaste();
 			String pasteRes = paster.RPaste(this.handleParam());
@@ -904,7 +906,7 @@ public class LanguageAna {
 	}
 	
 	//图表绘制函数调用机制集合
-	private String daigrameFunc(String funcName) throws VariableNotFoundException {
+	private String daigrameFunc(String funcName) throws VariableNotFoundException, IlleagelDiagrameSyntaxException {
 		DrawDiagram drawDiagrame = new DrawDiagram();
 		if (funcName.equals(FuncConstant.PLOT)) {
 			drawDiagrame.creatChart(FuncConstant.PLOT, this.handleParam());
@@ -924,7 +926,7 @@ public class LanguageAna {
 	}
 	
 	//迭代形式处理参数，参数中加入函数时，返回不是非法参数时，可以执行
-	private String handleParam() throws VariableNotFoundException {
+	private String handleParam() throws VariableNotFoundException, IlleagelDiagrameSyntaxException {
 		Token currToken = this.getNextToken();
 		String param = "";
 		if (!this.matchSymbol(currToken.getWord(), "(")) {

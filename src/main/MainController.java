@@ -17,6 +17,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 
 import exception.ComputException;
+import exception.IlleagelDiagrameSyntaxException;
 import exception.SyntaxException;
 import exception.VariableNotFoundException;
 import exception.WordException;
@@ -67,7 +68,7 @@ public class MainController {
 			// 语法分析部分
 			try {
 				languageAnalyze.begin();
-			} catch (ComputException | SyntaxException | VariableNotFoundException e) {
+			} catch (ComputException | SyntaxException | VariableNotFoundException | IlleagelDiagrameSyntaxException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				appendToPane(textReadPane, "\n" + e.getMessage(), Color.RED);

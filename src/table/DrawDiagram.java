@@ -16,6 +16,7 @@ import basicvar.RNumeric;
 import collection.CollectionFactory;
 import collection.RCollection;
 import collection.RVector;
+import exception.IlleagelDiagrameSyntaxException;
 import function.FuncConstant;
 import varmanage.VarManager;
 
@@ -49,7 +50,7 @@ public class DrawDiagram {
 	}
 	
 	//对外接口，筛选调用生成函数。
-	public void creatChart(String functionName, String Content) {
+	public void creatChart(String functionName, String Content) throws IlleagelDiagrameSyntaxException {
 		try{
 			if (functionName.equals(FuncConstant.BARPLOT)){
 				this.createBarChart(Content);
@@ -110,14 +111,13 @@ public class DrawDiagram {
 		return barInput;
 	}
 	
-	private void createBarChart(String input) throws IOException {
+	private void createBarChart(String input) throws IOException, IlleagelDiagrameSyntaxException {
 		//模拟传入的数据。再将函数分开为验证与创建部分。
 		//根据R简单图来看，可能传入的首先是这两组必要数据，接下来又可选的X轴标题，Y轴标题，大标题依次排开。
 		//这儿要拆分字符串并且检查数据合法。
 		BarInputString barInput = setBarInputString(input);
 		if(!checkBarData(barInput.getValue(), barInput.getName())) {
-			System.out.println("头大");
-			return;
+			throw new IlleagelDiagrameSyntaxException("barchart");
 		}
 		
 		//这儿以下确确实实是创建表的部分，先获取数据
@@ -142,7 +142,7 @@ public class DrawDiagram {
 		barchart.ChartCreate();
 		JFreeChart jfc = barchart.getJFreeChart();
 		FileOutputStream chartJPG = new FileOutputStream(barchart.getUrl());
-		ChartUtilities.writeChartAsJPEG(chartJPG, jfc, 1600, 1200);
+		ChartUtilities.writeChartAsJPEG(chartJPG, jfc, 1000, 750);
 		DiagramImageView div = new DiagramImageView(barchart.getTitle(),barchart.getUrl());
 		chartJPG.close();
 	}
@@ -176,12 +176,11 @@ public class DrawDiagram {
 		return pieInput;
 	}
 	
-	private void createPieChart(String input) throws IOException {
+	private void createPieChart(String input) throws IOException, IlleagelDiagrameSyntaxException {
 		//创建数据，检查数据合法性。
 		PieInputString pieInput = SetPieInputString(input);
 		if (!checkPieData(pieInput.getName(), pieInput.getValue())) {
-			System.out.println("脸扁");
-			return;
+			throw new IlleagelDiagrameSyntaxException("piechart");
 		}
 		
 		//获得图表数据
@@ -204,7 +203,7 @@ public class DrawDiagram {
 		pieChart.ChartCreate();
 		JFreeChart jfc = pieChart.getJFreeChart();
 		FileOutputStream chartJPG = new FileOutputStream(pieChart.getUrl());
-		ChartUtilities.writeChartAsJPEG(chartJPG, jfc, 1600, 1200);
+		ChartUtilities.writeChartAsJPEG(chartJPG, jfc, 1000, 750);
 		DiagramImageView div = new DiagramImageView(pieChart.getTitle(), pieChart.getUrl());
 		chartJPG.close();
 	}
@@ -233,14 +232,13 @@ public class DrawDiagram {
 		return serInput;
 	}
 	
-	private void createSerChart(String input) throws IOException {
+	private void createSerChart(String input) throws IOException, IlleagelDiagrameSyntaxException {
 		
 		//同样需要解析并且判断对错
 		SerInputString serInput = SetSerInputString(input);
 		ArrayList<String> valueList = serInput.getValue();
 		if (!checkSerData(valueList)) {
-			System.out.println("脑阔疼");
-			return;
+			throw new IlleagelDiagrameSyntaxException("serchart");
 		}
 		
 		//获取数据，折线图可以接受任意多的Numeric类型Vector进行生成，需要嵌套循环。
@@ -267,7 +265,7 @@ public class DrawDiagram {
 		serChart.ChartCreate();
 		JFreeChart jfc = serChart.getJFreeChart();
 		FileOutputStream chartJPG = new FileOutputStream(serChart.getUrl());
-		ChartUtilities.writeChartAsJPEG(chartJPG, jfc, 1600, 1200);
+		ChartUtilities.writeChartAsJPEG(chartJPG, jfc, 1000, 750);
 		DiagramImageView dv = new DiagramImageView(serChart.getTitle(), serChart.getUrl());
 		chartJPG.close();
 	}

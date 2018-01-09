@@ -27,13 +27,13 @@ public class DiagramImageView extends JFrame {
 	
 	public DiagramImageView(String title, String url) {
 		setTitle(title);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+//		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	    setLocationRelativeTo(null);
-	    setSize(1620, 1250);
+	    setSize(1020, 800);
 	    setResizable(false);
 	    getContentPane().setLayout(null);
 	    this.myPanel = new ImagePanel(url);
-	    myPanel.setBounds(0, 0, 1600, 1200);
+	    myPanel.setBounds(0, 0, 1000, 750);
 	    getContentPane().add(myPanel);
 	    setVisible(true);
 	}
@@ -61,7 +61,7 @@ class ImagePanel extends JPanel {
 		if (null == image) {
             return;
 		}
-		g.drawImage(image, 0, 0, 1600, 1200, this);
+		g.drawImage(image, 0, 0, 1000, 750, this);
 		g = null;
 	}
 }
